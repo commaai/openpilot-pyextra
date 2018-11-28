@@ -135,7 +135,9 @@ class Overpass(object):
                 else:
                     r = requests.post(self.url, query, timeout=self.timeout)
                 response = r.content
-            except requests.exceptions.BaseHTTPError as e:
+            except (requests.exceptions.BaseHTTPError, requests.exceptions.RequestException) as e:
+                if not do_retry:
+                    raise e
                 retry_exceptions.append(e)
                 continue
 
