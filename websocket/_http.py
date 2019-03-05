@@ -139,8 +139,10 @@ def _get_addrinfo_list(hostname, port, is_secure, proxy):
         hostname, is_secure, proxy.host, proxy.port, proxy.auth, proxy.no_proxy)
     try:
         if not phost:
-            addrinfo_list = socket.getaddrinfo(
+            addrinfo_list = [ai for ai in socket.getaddrinfo(
                 hostname, port, 0, 0, socket.SOL_TCP)
+                if (ai[0] == socket.AF_INET6 and socket.has_ipv6) or ai[0] != socket.AF_INET6
+            ]
             return addrinfo_list, False, None
         else:
             pport = pport and pport or 80
