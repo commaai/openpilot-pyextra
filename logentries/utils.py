@@ -122,8 +122,8 @@ class PlainTextSocketAppender(threading.Thread):
         except KeyboardInterrupt:
             if self.verbose:
                 dbg("Logentries asynchronous socket client interrupted")
-
-        self.close_connection()
+        finally:
+            self.close_connection()
 
 SocketAppender = PlainTextSocketAppender
 
